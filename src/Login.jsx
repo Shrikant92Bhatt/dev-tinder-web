@@ -13,7 +13,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({
-    mode: 'onChange', // ✅ trigger validation onBlur
+    mode: 'onChange',
   });
 
   const onSubmit = async (data) => {
