@@ -1,17 +1,19 @@
 import React from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutAPI } from '../api/index';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { removeUser } from '../store/userSlice';
 
 const Navbar = () => {
+    const dispatch = useDispatch();
     const user = useSelector((state)=> state.user);
     const navigate = useNavigate();
     const logoutHandler = async() => {
         try {
             const resp = await logoutAPI();
             console.log(resp);
-            
+            dispatch(removeUser());
             navigate("/login")
         } catch (error) {
             console.error(error);

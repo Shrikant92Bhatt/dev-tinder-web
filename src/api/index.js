@@ -30,6 +30,15 @@ export const logoutAPI = async() => {
 
 }
 
+export const getUser = async()=> {
+    try {
+        const response = axios.get(URL+'/profile/view');
+        return (await response).data;
+    } catch (error) {
+        throw new Error("Error in fetch user", error);
+    }
+}
+
 
 
 export default login
