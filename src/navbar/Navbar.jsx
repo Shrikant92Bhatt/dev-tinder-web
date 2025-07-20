@@ -1,23 +1,37 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-
+import { logoutAPI } from '../api/index';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     const user = useSelector((state)=> state.user);
+    const navigate = useNavigate();
+    const logoutHandler = async() => {
+        try {
+            const resp = await logoutAPI();
+            console.log(resp);
+            
+            navigate("/login")
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
   return (
     <div className="navbar bg-base-300 shadow-sm">
         <div className="flex-1">
             <a className="btn btn-ghost text-xl">devTinder</a>
         </div>
         {user && <>
-        <span>Welcome {user.firstName}</span>
+        <span>Welcome {user?.firstName}</span>
         <div className="flex gap-2">
             <div className="dropdown dropdown-end mx-5">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
                 <img
-                    alt={`${user.firstName} avatar`}
-                    src={user.photoUrl} />
+                    alt={`${user?.firstName} avatar`}
+                    src={user?.photoUrl} />
                 </div>
             </div>
             <ul
@@ -30,7 +44,7 @@ const Navbar = () => {
                 </a>
                 </li>
                 <li><a>Settings</a></li>
-                <li><a>Logout</a></li>
+                <li><Link onClick={logoutHandler}>Logout</Link></li>
             </ul>
             </div>
         </div>

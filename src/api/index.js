@@ -17,6 +17,19 @@ const login = async(email, password) => {
 
 }
 
+export const logoutAPI = async() => {
+    try {
+       const response =  await axios.post(`${URL}/logout`);
+        console.log({response});
+        
+        return response?.data;
+    } catch (error) {
+        throw new Error("Error in Logout ", error);
+        
+    }
+
+}
+
 
 
 export default login
