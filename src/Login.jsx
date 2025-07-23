@@ -1,13 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import login from './api';
-import {addUser} from './store/userSlice'
+import { addUser } from './store/userSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -18,13 +18,12 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-        const {data:user} = await login(data.email, data.password);
-        dispatch(addUser(user));
-        navigate('/feed')
-
+      const { data: user } = await login(data.email, data.password);
+      dispatch(addUser(user));
+      navigate('/feed');
     } catch (error) {
-        //:TODO
-        console.error(error);
+      //:TODO
+      console.error(error);
     }
     console.log(data);
   };
@@ -48,9 +47,7 @@ const Login = () => {
               },
             })}
           />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-          )}
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
 
           <label className="label">Password</label>
           <input
