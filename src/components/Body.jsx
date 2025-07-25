@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import Navbar from './navbar/Navbar';
+import Navbar from './Navbar';
 import Footer from './Footer';
-import { getUser } from './api/index';
-import { useDispatch } from 'react-redux';
-import { addUser } from './store/userSlice';
+import { getUser } from '../api/index';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUser } from '../store/userSlice';
 
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((store)=> store.user);
 
   const fetchUser = async () => {
     try {
@@ -21,7 +22,9 @@ const Body = () => {
   };
 
   useEffect(() => {
-    fetchUser();
+    if(!user) {
+      fetchUser();
+    }
   }, []);
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import login from './api';
-import { addUser } from './store/userSlice';
+import login from '../api';
+import { addUser } from '../store/userSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
