@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import login from '../api';
 import { addUser } from '../store/userSlice';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loginError, setLoginError]= useState('');
   const {
     register,
     handleSubmit,
@@ -23,7 +24,8 @@ const Login = () => {
       navigate('/feed');
     } catch (error) {
       //:TODO
-      console.error(error);
+      setLoginError(error.message)
+      console.error({error});
     }
     console.log(data);
   };
@@ -64,6 +66,10 @@ const Login = () => {
           />
           {errors.password && (
             <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+          )}
+
+          {loginError && (
+            <p className="text-red-500 text-sm mt-1">{loginError}</p>
           )}
 
           <button

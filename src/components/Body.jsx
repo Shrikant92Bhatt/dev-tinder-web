@@ -5,6 +5,7 @@ import Footer from './Footer';
 import { getUser } from '../api/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../store/userSlice';
+import Cookies from 'js-cookie';
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const Body = () => {
   };
 
   useEffect(() => {
-    if(!user) {
+    if(!user && Cookies.get('token')) {
       fetchUser();
     }
   }, []);

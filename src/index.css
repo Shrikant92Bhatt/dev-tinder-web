@@ -4,3 +4,7 @@
     dark --default,
     light --prefersdark;
 }
+
+.validator-hint {
+  @apply text-sm text-error visible;
+}
