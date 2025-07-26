@@ -24,7 +24,7 @@ const EditProfile = () => {
         firstName: user.firstName,
         lastName: user.lastName,
         age: user.age || 25,
-        gender: user.gender | 'male',
+        gender: user.gender ? user.gender : 'male',
         photoUrl: user.photoUrl,
         about: user.about,
       });
