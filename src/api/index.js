@@ -40,11 +40,11 @@ export const getUser = async () => {
 };
 
 export const getFeed = async () => {
-    try {
-      const response = axios.get(URL + '/user/feed', { withCredentials: true });
-      return (await response).data;
-    } catch (error) {
-      throw new Error("Error in fetching feed", error);
-    }
-}
+  try {
+    const response = axios.get(URL + '/user/feed', { withCredentials: true });
+    return (await response).data;
+  } catch (error) {
+    throw new Error('Error in fetching feed', error);
+  }
+};
 export default login;

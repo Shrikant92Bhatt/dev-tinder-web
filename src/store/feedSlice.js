@@ -13,12 +13,11 @@ const feedSlice = createSlice({
       state.loading = false;
     },
     removeFeed: (state) => {
-        state.data = [];
+      state.data = [];
     },
-    setLoading: (state)=> {
-        state.loading = true;
-    }
-
+    setLoading: (state) => {
+      state.loading = true;
+    },
   },
 });
 export const { addFeed, setLoading, removeFeed } = feedSlice.actions;

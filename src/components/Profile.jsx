@@ -1,10 +1,12 @@
-import React from 'react'
-import EditProfile from "./EditProfile";
+import React from 'react';
+import EditProfile from './EditProfile';
 
 const Profile = () => {
   return (
-    <div><EditProfile /></div>
-  )
-}
+    <div>
+      <EditProfile />
+    </div>
+  );
+};
 
-export default Profile
+export default Profile;

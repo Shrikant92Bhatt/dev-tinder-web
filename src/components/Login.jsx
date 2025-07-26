@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loginError, setLoginError]= useState('');
+  const [loginError, setLoginError] = useState('');
   const {
     register,
     handleSubmit,
@@ -24,8 +24,8 @@ const Login = () => {
       navigate('/feed');
     } catch (error) {
       //:TODO
-      setLoginError(error.message)
-      console.error({error});
+      setLoginError(error.message);
+      console.error({ error });
     }
     console.log(data);
   };
@@ -68,9 +68,7 @@ const Login = () => {
             <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
           )}
 
-          {loginError && (
-            <p className="text-red-500 text-sm mt-1">{loginError}</p>
-          )}
+          {loginError && <p className="text-red-500 text-sm mt-1">{loginError}</p>}
 
           <button
             type="submit"

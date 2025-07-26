@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFeed } from "../api/index";
+import { getFeed } from '../api/index';
 import { addFeed, setLoading } from '../store/feedSlice';
 import UserCard from './UserCard';
 
@@ -11,7 +11,7 @@ const Feed = () => {
     dispatch(setLoading());
     const data = await getFeed();
     dispatch(addFeed(data));
-  }
+  };
   useEffect(() => {
     fetchFeed();
   }, []);
@@ -26,13 +26,13 @@ const Feed = () => {
           <div className="skeleton h-4 w-full"></div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className='flex justify-center items-center my-5 flex-col'>
+    <div className="flex justify-center items-center my-5 flex-col">
       {feedData?.data?.map((user) => {
-        return (<UserCard key={user._id} {...user} />)
+        return <UserCard key={user._id} {...user} />;
       })}
     </div>
   );

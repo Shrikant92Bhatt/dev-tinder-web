@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((store)=> store.user);
+  const user = useSelector((store) => store.user);
 
   const fetchUser = async () => {
     try {
@@ -23,7 +23,7 @@ const Body = () => {
   };
 
   useEffect(() => {
-    if(!user && Cookies.get('token')) {
+    if (!user && Cookies.get('token')) {
       fetchUser();
     }
   }, []);
