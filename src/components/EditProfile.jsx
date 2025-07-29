@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-// import { FaLink } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfile } from "../api/index";
+import { addUser } from '../store/userSlice';
+import UserCard from './UserCard';
 
 const EditProfile = () => {
   const user = useSelector((root) => root.user);
+  const dispatch = useDispatch();
   const [skills, setSkills] = useState([]);
   const [skillInput, setSkillInput] = useState('');
 
@@ -13,7 +16,8 @@ const EditProfile = () => {
     handleSubmit,
     reset,
     setValue,
-    formState: { errors, isValid },
+    watch,
+    formState: { errors, isValid,  },
   } = useForm({
     mode: 'onChange',
   });
@@ -32,8 +36,18 @@ const EditProfile = () => {
     }
   }, [user, reset, setValue]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     data.skills = skills;
+    try {
+        const resp = await updateProfile(data);
+        console.log(resp);
+        if(resp) {
+            dispatch(addUser(resp.data));
+        }
+        
+    } catch (error) {
+        console.error(error);
+    }
     console.log(data);
   };
 
@@ -61,10 +75,11 @@ const EditProfile = () => {
       </div>
     );
   }
+  const updatedUser = watch();
 
   return (
     <div className="flex justify-center items-center my-10">
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md mx-10">
         <fieldset className="bg-base-300 border-base-300 rounded-box border p-6 space-y-4">
           <legend className="text-2xl mb-2">Edit Profile</legend>
 
@@ -124,7 +139,7 @@ const EditProfile = () => {
           <div className="form-control">
             <label className="label">Gender</label>
             <select
-              className={`select select-bordered w-full ${errors.gender ? 'select-error' : ''}`}
+              className={`select select-bordered w-full ${errors.gender ? 'select-error' : 'select-primary'}`}
               {...register('gender', { required: true })}
             >
               <option value="">Select gender</option>
@@ -143,7 +158,7 @@ const EditProfile = () => {
 
             <label
               className={`input validator ${
-                errors.photoUrl ? 'input-error' : ''
+                errors.photoUrl ? 'input-error' : 'input-primary'
               } flex items-center gap-2 w-full`}
             >
               <svg
@@ -186,7 +201,7 @@ const EditProfile = () => {
           <div className="form-control">
             <label className="label">About</label>
             <textarea
-              className="textarea textarea-bordered flex items-center gap-2 w-full"
+              className="textarea textarea-bordered flex items-center gap-2 w-full textarea-primary"
               placeholder="Tell us about yourself"
               {...register('about')}
             />
@@ -220,7 +235,7 @@ const EditProfile = () => {
                     addSkill();
                   }
                 }}
-                className="input input-bordered w-full"
+                className="input input-bordered w-full input-primary"
                 placeholder="Type a skill and press Enter"
               />
               <button type="button" className="btn btn-primary" onClick={addSkill}>
@@ -234,6 +249,8 @@ const EditProfile = () => {
           </button>
         </fieldset>
       </form>
+
+      <UserCard {...updatedUser} skills={skills} />
     </div>
   );
 };

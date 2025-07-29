@@ -47,4 +47,14 @@ export const getFeed = async () => {
     throw new Error('Error in fetching feed', error);
   }
 };
+
+export const updateProfile = async (data) => {
+  try {
+      const response = axios.patch(URL + '/profile/edit', data, {withCredentials: true} );
+      return (await response).data;
+  } catch (error) {
+    throw new Error("Error in update", error);
+    
+  }
+}
 export default login;
