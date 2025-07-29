@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from "../api/index";
 import { addUser } from '../store/userSlice';
 import UserCard from './UserCard';
+import { useToast } from '../hooks/useTost';
 
 const EditProfile = () => {
   const user = useSelector((root) => root.user);
+  const {showToast} = useToast();
   const dispatch = useDispatch();
   const [skills, setSkills] = useState([]);
   const [skillInput, setSkillInput] = useState('');
@@ -43,6 +45,7 @@ const EditProfile = () => {
         console.log(resp);
         if(resp) {
             dispatch(addUser(resp.data));
+            showToast({message: resp.message, type: 'success' })
         }
         
     } catch (error) {
