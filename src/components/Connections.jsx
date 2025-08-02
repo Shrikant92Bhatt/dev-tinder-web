@@ -10,7 +10,6 @@ const Connections = () => {
     const fetchConnections = async () => {
         try {
             const resp = await getConnections();
-            console.log(resp);
             dispatch(setConnections(resp.data));
         } catch (error) {
             console.error(error);
@@ -61,10 +60,6 @@ const Connections = () => {
             
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl'>
                 {connections.length > 0 && connections.map((connection) => {
-                    console.log('Connection data:', connection);
-                    console.log('About field:', connection.about);
-                    console.log('About type:', typeof connection.about);
-                    console.log('About length:', connection.about?.length);
                     
                     const { firstName, lastName, photoUrl, about, skills, age, gender } = connection;
                     
