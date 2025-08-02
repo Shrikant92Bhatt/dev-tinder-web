@@ -56,4 +56,13 @@ export const updateProfile = async (data) => {
     throw new Error('Error in update', error);
   }
 };
+
+export const getConnections = async () => {
+  try {
+    const response = axios.get(URL + '/user/connections', { withCredentials: true });
+    return (await response).data;
+  } catch (error) {
+    throw new Error('Error in fetching connections', error);
+  }
+};
 export default login;
