@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProfile } from "../api/index";
+import { updateProfile } from '../api/index';
 import { addUser } from '../store/userSlice';
 import UserCard from './UserCard';
 import { useToast } from '../hooks/useTost';
 
 const EditProfile = () => {
   const user = useSelector((root) => root.user);
-  const {showToast} = useToast();
+  const { showToast } = useToast();
   const dispatch = useDispatch();
   const [skills, setSkills] = useState([]);
   const [skillInput, setSkillInput] = useState('');
@@ -19,7 +19,7 @@ const EditProfile = () => {
     reset,
     setValue,
     watch,
-    formState: { errors, isValid,  },
+    formState: { errors, isValid },
   } = useForm({
     mode: 'onChange',
   });
@@ -41,15 +41,14 @@ const EditProfile = () => {
   const onSubmit = async (data) => {
     data.skills = skills;
     try {
-        const resp = await updateProfile(data);
-        console.log(resp);
-        if(resp) {
-            dispatch(addUser(resp.data));
-            showToast({message: resp.message, type: 'success' })
-        }
-        
+      const resp = await updateProfile(data);
+      console.log(resp);
+      if (resp) {
+        dispatch(addUser(resp.data));
+        showToast({ message: resp.message, type: 'success' });
+      }
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
     console.log(data);
   };

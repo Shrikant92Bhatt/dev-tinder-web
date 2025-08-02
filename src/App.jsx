@@ -18,7 +18,7 @@ function App() {
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Body />}>
-          <Route index element={<Navigate to="/feed" />} />
+            <Route index element={<Navigate to="/feed" />} />
             <Route
               path="/feed"
               element={

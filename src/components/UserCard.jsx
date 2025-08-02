@@ -15,11 +15,15 @@ const UserCard = ({ firstName, lastName, photoUrl, about, skills, age, gender })
       </figure>
       <div className="card-body">
         <h2 className="card-title">{`${firstName} ${lastName}`}</h2>
-        <div className='flex justify-between'>
-            <strong>Gender: <span className='capitalize'>{gender}</span></strong>
-            <span className='strong'>Age: {age}</span>
+        <div className="flex justify-between">
+          <strong>
+            Gender: <span className="capitalize">{gender}</span>
+          </strong>
+          <span className="strong">Age: {age}</span>
         </div>
-        <p className='line-clamp-3' title={about}>{about}</p>
+        <p className="line-clamp-3" title={about}>
+          {about}
+        </p>
         <div className="card-actions justify-end my-5">
           {skills?.map((skill) => (
             <div className="badge badge-outline" key={skill}>

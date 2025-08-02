@@ -50,11 +50,10 @@ export const getFeed = async () => {
 
 export const updateProfile = async (data) => {
   try {
-      const response = axios.patch(URL + '/profile/edit', data, {withCredentials: true} );
-      return (await response).data;
+    const response = axios.patch(URL + '/profile/edit', data, { withCredentials: true });
+    return (await response).data;
   } catch (error) {
-    throw new Error("Error in update", error);
-    
+    throw new Error('Error in update', error);
   }
-}
+};
 export default login;
