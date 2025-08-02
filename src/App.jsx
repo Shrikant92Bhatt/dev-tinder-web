@@ -9,6 +9,7 @@ import Feed from './components/Feed';
 import Profile from './components/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import Connections from './components/Connections';
+import Requests from './components/Requests';
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -51,6 +52,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Connections />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/requests"
+              element={
+                <PrivateRoute>
+                  <Requests />
                 </PrivateRoute>
               }
             />

@@ -1,22 +1,26 @@
 import React, { useEffect } from 'react'
-import { getConnections } from '../api';
+import { getRequests, acceptRequest, rejectRequest } from '../api';
 import { useDispatch, useSelector } from 'react-redux';
-import { setConnections } from '../store/connectionSlice';
+import { setRequests, acceptRequest as acceptRequestAction, rejectRequest as rejectRequestAction } from '../store/requestsSlice';
+import { useToast } from '../hooks/useTost';
 
-const Connections = () => {
+const Requests = () => {
     const dispatch = useDispatch();
-    const {connections} = useSelector((state) => state.connection);
+    const { requests } = useSelector((state) => state.requests);
+    const { showToast } = useToast();
     
-    const fetchConnections = async () => {
+    const fetchRequests = async () => {
         try {
-            const resp = await getConnections();
-            dispatch(setConnections(resp.data));
+            const resp = await getRequests();
+            dispatch(setRequests(resp.data));
         } catch (error) {
             console.error(error);
+            showToast({ message: 'Failed to fetch requests', type: 'error' });
         }
     }   
+    
     useEffect(() => {
-        fetchConnections();
+        fetchRequests();
     }, []);
 
     // Gender icon mapping
@@ -39,13 +43,35 @@ const Connections = () => {
         return 'badge-neutral';
     };
 
-    if(connections.length === 0) {
+    const handleAcceptRequest = async (requestId) => {
+        try {
+            await acceptRequest(requestId);
+            dispatch(acceptRequestAction(requestId));
+            showToast({ message: 'Connection request accepted!', type: 'success' });
+        } catch (error) {
+            console.error(error);
+            showToast({ message: 'Failed to accept request', type: 'error' });
+        }
+    };
+
+    const handleRejectRequest = async (requestId) => {
+        try {
+            await rejectRequest(requestId);
+            dispatch(rejectRequestAction(requestId));
+            showToast({ message: 'Connection request rejected', type: 'info' });
+        } catch (error) {
+            console.error(error);
+            showToast({ message: 'Failed to reject request', type: 'error' });
+        }
+    };
+
+    if(requests.length === 0) {
         return (
             <div className='flex justify-center items-center my-16'>
                 <div className='text-center'>
-                    <div className="text-6xl mb-4">🤝</div>
-                    <h1 className='text-2xl font-bold text-base-content mb-2'>No connections found</h1>
-                    <p className='text-base-content/70'>Start connecting with people to see them here!</p>
+                    <div className="text-6xl mb-4">📨</div>
+                    <h1 className='text-2xl font-bold text-base-content mb-2'>No pending requests</h1>
+                    <p className='text-base-content/70'>You don't have any connection requests at the moment</p>
                 </div>
             </div>
         )
@@ -54,17 +80,16 @@ const Connections = () => {
     return (
         <div className='flex flex-col justify-center items-center my-8 p-4'>
             <div className="text-center mb-8">
-                <h1 className='text-3xl font-bold text-base-content mb-2'>Your Connections</h1>
-                <p className='text-base-content/70'>People you've connected with</p>
+                <h1 className='text-3xl font-bold text-base-content mb-2'>Connection Requests</h1>
+                <p className='text-base-content/70'>People who want to connect with you</p>
             </div>
             
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl'>
-                {connections.length > 0 && connections.map((connection) => {
-                    
-                    const { firstName, lastName, photoUrl, about, skills, age, gender } = connection;
+                {requests.length > 0 && requests.map((request) => {
+                    const { firstName, lastName, photoUrl, about, skills, age, gender, _id } = request.fromUserId;
                     
                     return (
-                        <div key={connection._id} className="card bg-gradient-to-br from-base-200 to-base-300 shadow-lg hover:shadow-xl transition-all duration-300 border border-base-300">
+                        <div key={_id} className="card bg-gradient-to-br from-base-200 to-base-300 shadow-lg hover:shadow-xl transition-all duration-300 border border-base-300">
                             {/* Profile Header */}
                             <div className="card-body p-6">
                                 <div className="flex items-start gap-4 mb-4">
@@ -144,25 +169,36 @@ const Connections = () => {
 
                                 {/* Action Buttons */}
                                 <div className="card-actions justify-end pt-4 border-t border-base-300">
-                                    <button className="btn btn-circle btn-outline btn-sm btn-warning" title="Message">
-                                        <svg className="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
-                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                            </g>
-                                        </svg>
-                                    </button>
-                                    <button className="btn btn-circle btn-outline btn-sm btn-error" title="Remove Connection">
+                                    <button 
+                                        className="btn btn-circle btn-outline btn-sm btn-error" 
+                                        title="Reject Request"
+                                        onClick={() => handleRejectRequest(request._id)}
+                                    >
                                         <svg className="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
                                                 <path d="M18 6L6 18M6 6l12 12"></path>
                                             </g>
                                         </svg>
                                     </button>
-                                    <button className="btn btn-circle btn-primary btn-sm" title="View Profile">
+                                    <button 
+                                        className="btn btn-circle btn-outline btn-sm btn-warning" 
+                                        title="View Profile"
+                                    >
                                         <svg className="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                             <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
                                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                                 <circle cx="12" cy="12" r="3"></circle>
+                                            </g>
+                                        </svg>
+                                    </button>
+                                    <button 
+                                        className="btn btn-circle btn-primary btn-sm" 
+                                        title="Accept Request"
+                                        onClick={() => handleAcceptRequest(request._id)}
+                                    >
+                                        <svg className="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor">
+                                                <path d="M20 6L9 17l-5-5"></path>
                                             </g>
                                         </svg>
                                     </button>
@@ -176,4 +212,4 @@ const Connections = () => {
     )
 }
 
-export default Connections
+export default Requests 

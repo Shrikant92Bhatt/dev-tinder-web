@@ -65,4 +65,32 @@ export const getConnections = async () => {
     throw new Error('Error in fetching connections', error);
   }
 };
+
+export const getRequests = async () => {
+  try {
+    const response = axios.get(URL + '/user/requests', { withCredentials: true });
+    return (await response).data;
+  } catch (error) {
+    throw new Error('Error in fetching requests', error);
+  }
+};
+
+export const acceptRequest = async (requestId) => {
+  try {
+    const response = axios.post(URL + `/request/review/accepted/${requestId}`, {}, { withCredentials: true });
+    return (await response).data;
+  } catch (error) {
+    throw new Error('Error in accepting request', error);
+  }
+};
+
+export const rejectRequest = async (requestId) => {
+  try {
+    const response = axios.post(URL + `/user/requests/${requestId}/reject`, {}, { withCredentials: true });
+    return (await response).data;
+  } catch (error) {
+    throw new Error('Error in rejecting request', error);
+  }
+};
+
 export default login;
