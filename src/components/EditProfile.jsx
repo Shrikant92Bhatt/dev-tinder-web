@@ -252,7 +252,7 @@ const EditProfile = () => {
         </fieldset>
       </form>
 
-      <UserCard {...updatedUser} skills={skills} />
+      <UserCard {...updatedUser} skills={skills} showActions={false} />
     </div>
   );
 };
