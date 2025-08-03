@@ -42,7 +42,7 @@ const EditProfile = () => {
     data.skills = skills;
     try {
       const resp = await updateProfile(data);
-      console.log(resp);
+
       if (resp) {
         dispatch(addUser(resp.data));
         showToast({ message: resp.message, type: 'success' });
@@ -50,7 +50,7 @@ const EditProfile = () => {
     } catch (error) {
       console.error(error);
     }
-    console.log(data);
+
   };
 
   const addSkill = () => {
@@ -80,10 +80,10 @@ const EditProfile = () => {
   const updatedUser = watch();
 
   return (
-    <div className="flex justify-center items-center my-10">
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md mx-10">
-        <fieldset className="bg-base-300 border-base-300 rounded-box border p-6 space-y-4">
-          <legend className="text-2xl mb-2">Edit Profile</legend>
+    <div className="flex flex-col lg:flex-row justify-center items-start gap-6 my-6 lg:my-10 px-4 lg:px-10">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md order-2 lg:order-1">
+        <fieldset className="bg-base-300 border-base-300 rounded-box border p-4 lg:p-6 space-y-4">
+          <legend className="text-xl lg:text-2xl mb-2">Edit Profile</legend>
 
           {/* First Name */}
           <div className="form-control">
@@ -117,41 +117,44 @@ const EditProfile = () => {
             )}
           </div>
 
-          {/* Age */}
-          <div className="form-control">
-            <label className="label">Age</label>
-            <input
-              type="number"
-              placeholder="Age"
-              className={`input input-bordered w-full ${
-                errors.age ? 'input-error' : 'input-primary'
-              }`}
-              {...register('age', {
-                required: true,
-                min: 1,
-                max: 100,
-              })}
-            />
-            {errors.age && (
-              <div className="validator-hint text-red-500">Enter a valid age (1–100)</div>
-            )}
-          </div>
+          {/* Age and Gender - Side by Side on Desktop, Stacked on Mobile */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            {/* Age */}
+            <div className="form-control flex-1">
+              <label className="label">Age</label>
+              <input
+                type="number"
+                placeholder="Age"
+                className={`input input-bordered w-full ${
+                  errors.age ? 'input-error' : 'input-primary'
+                }`}
+                {...register('age', {
+                  required: true,
+                  min: 1,
+                  max: 100,
+                })}
+              />
+              {errors.age && (
+                <div className="validator-hint text-red-500">Enter a valid age (1–100)</div>
+              )}
+            </div>
 
-          {/* Gender */}
-          <div className="form-control">
-            <label className="label">Gender</label>
-            <select
-              className={`select select-bordered w-full ${errors.gender ? 'select-error' : 'select-primary'}`}
-              {...register('gender', { required: true })}
-            >
-              <option value="">Select gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-            {errors.gender && (
-              <div className="validator-hint text-red-500">Please select your gender</div>
-            )}
+            {/* Gender */}
+            <div className="form-control flex-1">
+              <label className="label">Gender</label>
+              <select
+                className={`select select-bordered w-full ${errors.gender ? 'select-error' : 'select-primary'}`}
+                {...register('gender', { required: true })}
+              >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              {errors.gender && (
+                <div className="validator-hint text-red-500">Please select your gender</div>
+              )}
+            </div>
           </div>
 
           {/* Profile Photo URL with DaisyUI validator styling */}
@@ -226,7 +229,7 @@ const EditProfile = () => {
                 </div>
               ))}
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 value={skillInput}
@@ -252,7 +255,9 @@ const EditProfile = () => {
         </fieldset>
       </form>
 
-      <UserCard {...updatedUser} skills={skills} showActions={false} />
+      <div className="w-full max-w-2xl order-1 lg:order-2">
+        <UserCard {...updatedUser} skills={skills} showActions={false} />
+      </div>
     </div>
   );
 };

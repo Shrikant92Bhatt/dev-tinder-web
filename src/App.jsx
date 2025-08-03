@@ -30,7 +30,7 @@ function App() {
               }
             />
             <Route path="/login" element={user || token ? <Navigate to="/feed" /> : <Login />} />
-            <Route path="/signup" element={user || token ? <Navigate to="/feed" /> : <Signup />} />
+            <Route path="/signup" element={user || token ? <Navigate to="/profile" /> : <Signup />} />
             <Route
               path="/About"
               element={

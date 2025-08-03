@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { getConnections } from '../api';
 import { useDispatch, useSelector } from 'react-redux';
 import { setConnections } from '../store/connectionSlice';
+import { getGenderIcon, getAgeColor, truncateText } from '../util/userUtils';
 
 const Connections = () => {
     const dispatch = useDispatch();
@@ -18,26 +19,6 @@ const Connections = () => {
     useEffect(() => {
         fetchConnections();
     }, []);
-
-    // Gender icon mapping
-    const getGenderIcon = (gender) => {
-        switch (gender?.toLowerCase()) {
-            case 'male':
-                return '👨';
-            case 'female':
-                return '👩'; 
-            default:
-                return '👤';
-        }
-    };
-
-    // Age group color mapping
-    const getAgeColor = (age) => {
-        if (age < 25) return 'badge-primary';
-        if (age < 35) return 'badge-secondary';
-        if (age < 45) return 'badge-accent';
-        return 'badge-neutral';
-    };
 
     if(connections.length === 0) {
         return (
@@ -106,7 +87,7 @@ const Connections = () => {
                                     </div>
                                     {about ? (
                                         <p className="text-xs text-base-content/80 leading-relaxed pl-4">
-                                            {about.length > 80 ? `${about.substring(0, 80)}...` : about}
+                                            {truncateText(about, 80)}
                                         </p>
                                     ) : (
                                         <p className="text-xs text-base-content/50 leading-relaxed pl-4 italic">

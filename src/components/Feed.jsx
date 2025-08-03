@@ -13,7 +13,7 @@ const Feed = () => {
     dispatch(setLoading());
     try {
       const data = await getFeed();
-      console.log('Feed data received:', data);
+
       dispatch(addFeed(data));
     } catch (error) {
       console.error('Error fetching feed:', error);
@@ -82,7 +82,7 @@ const Feed = () => {
   const currentUser = feedData.data[currentUserIndex];
 
   return (
-    <div className="flex justify-center items-center min-h-[calc(100vh-200px)] p-4">
+    <div className="flex justify-center items-center min-h-[calc(100vh-200px)] p-2 sm:p-4">
       <div className="w-full max-w-4xl">
         <UserCard 
           key={currentUser._id} 

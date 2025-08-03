@@ -1,33 +1,14 @@
 import React, { useState } from 'react';
 import { sendConnectionRequest, rejectUser } from '../api';
 import { useToast } from '../hooks/useTost';
+import { getGenderIcon, getAgeColor, truncateText } from '../util/userUtils';
 
 const UserCard = ({ _id, firstName, lastName, photoUrl, about, skills, age, gender, onAction, showActions = true }) => {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const { showToast } = useToast();
 
-  console.log('UserCard rendering with props:', { _id, firstName, lastName, photoUrl, about, skills, age, gender });
 
-  // Gender icon mapping
-  const getGenderIcon = (gender) => {
-    switch (gender?.toLowerCase()) {
-      case 'male':
-        return '👨';
-      case 'female':
-        return '👩';
-      default:
-        return '👤';
-    }
-  };
-
-  // Age group color mapping
-  const getAgeColor = (age) => {
-    if (age < 25) return 'badge-primary';
-    if (age < 35) return 'badge-secondary';
-    if (age < 45) return 'badge-accent';
-    return 'badge-neutral';
-  };
 
   const handleInterested = async () => {
     if (actionLoading) return;
@@ -63,9 +44,10 @@ const UserCard = ({ _id, firstName, lastName, photoUrl, about, skills, age, gend
 
   return (
     <div className="card bg-gradient-to-br from-base-200 to-base-300 w-full shadow-xl hover:shadow-2xl transition-all duration-300 border border-base-300">
-      <div className="flex h-96">
-        {/* Left Side - Full Height Profile Image */}
-        <div className="relative w-96 flex-shrink-0">
+      {/* Mobile: Vertical Layout, Desktop: Horizontal Layout */}
+      <div className="flex flex-col lg:flex-row min-h-96">
+        {/* Left Side - Profile Image */}
+        <div className="relative w-full lg:w-96 h-64 lg:h-auto flex-shrink-0">
           <img
             className={`${loading ? 'skeleton w-full h-full object-cover' : 'w-full h-full object-cover'}`}
             src={photoUrl}
@@ -84,52 +66,52 @@ const UserCard = ({ _id, firstName, lastName, photoUrl, about, skills, age, gend
           {/* Age and Gender Badge Overlay */}
           {!loading && (
             <div className="absolute top-4 right-4 flex gap-2">
-              <div className={`badge ${getAgeColor(age)} gap-1 text-white font-semibold`}>
-                <span className="text-sm">🎂</span>
+              <div className={`badge ${getAgeColor(age)} gap-1 text-white font-semibold text-xs lg:text-sm`}>
+                <span className="text-xs lg:text-sm">🎂</span>
                 {age}
               </div>
-              <div className="badge badge-ghost gap-1 bg-black/50 backdrop-blur-sm">
-                <span className="text-sm">{getGenderIcon(gender)}</span>
-                <span className="capitalize text-sm">{gender}</span>
+              <div className="badge badge-ghost gap-1 bg-black/50 backdrop-blur-sm text-xs lg:text-sm">
+                <span className="text-xs lg:text-sm">{getGenderIcon(gender)}</span>
+                <span className="capitalize text-xs lg:text-sm">{gender}</span>
               </div>
             </div>
           )}
         </div>
 
         {/* Right Side - Content with Action Buttons */}
-        <div className="flex-1 p-8 flex flex-col justify-between">
+        <div className="flex-1 p-4 lg:p-8 flex flex-col justify-between">
           {/* Top Content */}
-          <div>
+          <div className="flex-1">
             {/* Name */}
-            <h2 className="card-title text-3xl font-bold text-base-content mb-4">
+            <h2 className="card-title text-xl lg:text-3xl font-bold text-base-content mb-3 lg:mb-4">
               {`${firstName} ${lastName}`}
             </h2>
             
             {/* About Section */}
             {about && (
-              <div className="mb-6">
-                <div className="flex items-start gap-2 mb-3">
-                  <span className="text-xl">💬</span>
-                  <span className="text-base font-medium text-base-content/70">About</span>
+              <div className="mb-4 lg:mb-6">
+                <div className="flex items-start gap-2 mb-2 lg:mb-3">
+                  <span className="text-lg lg:text-xl">💬</span>
+                  <span className="text-sm lg:text-base font-medium text-base-content/70">About</span>
                 </div>
-                <p className="text-lg text-base-content/80 leading-relaxed pl-7" title={about}>
-                  {about.length > 120 ? `${about.substring(0, 120)}...` : about}
+                <p className="text-sm lg:text-lg text-base-content/80 leading-relaxed pl-5 lg:pl-7" title={about}>
+                  {truncateText(about, window.innerWidth < 1024 ? 80 : 120)}
                 </p>
               </div>
             )}
 
             {/* Skills Section */}
             {skills && skills.length > 0 && (
-              <div className="mb-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xl">🛠️</span>
-                  <span className="text-base font-medium text-base-content/70">Skills & Expertise</span>
+              <div className="mb-4 lg:mb-6">
+                <div className="flex items-center gap-2 mb-2 lg:mb-3">
+                  <span className="text-lg lg:text-xl">🛠️</span>
+                  <span className="text-sm lg:text-base font-medium text-base-content/70">Skills & Expertise</span>
                 </div>
-                <div className="flex flex-wrap gap-2 pl-7">
+                <div className="flex flex-wrap gap-1 lg:gap-2 pl-5 lg:pl-7">
                   {skills.map((skill) => (
                     <div 
                       key={skill} 
-                      className="badge badge-outline badge-md hover:badge-primary transition-colors duration-200 cursor-pointer"
+                      className="badge badge-outline badge-sm lg:badge-md hover:badge-primary transition-colors duration-200 cursor-pointer text-xs lg:text-sm"
                       title={skill}
                     >
                       {skill}
@@ -140,37 +122,37 @@ const UserCard = ({ _id, firstName, lastName, photoUrl, about, skills, age, gend
             )}
           </div>
 
-          {/* Action Buttons - Integrated into right content */}
+          {/* Action Buttons - Mobile: Bottom, Desktop: Right */}
           {showActions && (
-            <div className="flex justify-end gap-4 pt-1 border-t border-base-300">
+            <div className="flex justify-center lg:justify-end gap-3 lg:gap-4 pt-4 lg:pt-6 border-t border-base-300 mt-3 lg:mt-4">
               <button 
-                className="btn btn-circle btn-outline btn-error btn-lg" 
+                className="btn btn-circle btn-outline btn-error btn-md lg:btn-lg" 
                 title="Not Interested"
                 onClick={handleReject}
                 disabled={actionLoading}
               >
                 {actionLoading ? (
-                  <span className="loading loading-spinner loading-md"></span>
+                  <span className="loading loading-spinner loading-sm lg:loading-md"></span>
                 ) : (
-                  <span className="text-2xl">✕</span>
+                  <span className="text-lg lg:text-2xl">✕</span>
                 )}
               </button>
               <button 
-                className="btn btn-circle btn-outline btn-warning btn-lg" 
+                className="btn btn-circle btn-outline btn-warning btn-md lg:btn-lg" 
                 title="View Profile"
               >
-                <span className="text-2xl">👁️</span>
+                <span className="text-lg lg:text-2xl">👁️</span>
               </button>
               <button 
-                className="btn btn-circle btn-primary btn-lg" 
+                className="btn btn-circle btn-primary btn-md lg:btn-lg" 
                 title="Interested"
                 onClick={handleInterested}
                 disabled={actionLoading}
               >
                 {actionLoading ? (
-                  <span className="loading loading-spinner loading-md"></span>
+                  <span className="loading loading-spinner loading-sm lg:loading-md"></span>
                 ) : (
-                  <span className="text-2xl">❤️</span>
+                  <span className="text-lg lg:text-2xl">❤️</span>
                 )}
               </button>
             </div>

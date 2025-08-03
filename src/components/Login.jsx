@@ -27,7 +27,7 @@ const Login = () => {
       setLoginError(error.message);
       console.error({ error });
     }
-    console.log(data);
+    
   };
 
   return (
@@ -77,6 +77,18 @@ const Login = () => {
           >
             Login
           </button>
+
+          {/* Signup Link */}
+          <div className="text-center mt-4">
+            <span className="text-base-content/70">Don't have an account? </span>
+            <button
+              type="button"
+              onClick={() => navigate('/signup')}
+              className="link link-primary font-medium"
+            >
+              Sign up here
+            </button>
+          </div>
         </fieldset>
       </form>
     </div>

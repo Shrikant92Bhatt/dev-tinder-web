@@ -11,7 +11,6 @@ const login = async (email, password) => {
       },
       { withCredentials: true }
     );
-    console.log({ response });
 
     return response?.data;
   } catch (error) {
@@ -22,7 +21,6 @@ const login = async (email, password) => {
 export const logoutAPI = async () => {
   try {
     const response = await axios.post(`${URL}/logout`, { withCredentials: true });
-    console.log({ response });
 
     return response?.data;
   } catch (error) {
@@ -108,6 +106,15 @@ export const rejectUser = async (userId) => {
     return (await response).data;
   } catch (error) {
     throw new Error('Error in rejecting user', error);
+  }
+};
+
+export const signup = async (userData) => {
+  try {
+    const response = await axios.post(URL + '/signup', userData, { withCredentials: true });
+    return response?.data;
+  } catch (error) {
+    throw new Error('Error in signup', error);
   }
 };
 

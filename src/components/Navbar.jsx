@@ -5,15 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { removeUser } from '../store/userSlice';
 import { clearCookies } from '../util/web-storage';
+import { getProfileCompletion, getProfileCompletionColor } from '../util/userUtils';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+  
   const logoutHandler = async () => {
     try {
       const resp = await logoutAPI();
-      console.log(resp);
+  
       clearCookies();
       dispatch(removeUser());
       navigate('/login');
@@ -21,6 +23,10 @@ const Navbar = () => {
       console.error(error);
     }
   };
+
+  const profileCompletion = getProfileCompletion(user);
+  const completionColor = getProfileCompletionColor(profileCompletion);
+
   return (
     <div className="navbar bg-base-300 shadow-lg border-b border-base-300">
       <div className="flex-1">
@@ -45,7 +51,9 @@ const Navbar = () => {
                 <li>
                   <Link to={'/profile'} className="justify-between">
                     Profile
-                    <span className="badge">New</span>
+                    <div className={`badge ${completionColor} badge-sm`}>
+                      {profileCompletion}%
+                    </div>
                   </Link>
                 </li>
                 <li>
