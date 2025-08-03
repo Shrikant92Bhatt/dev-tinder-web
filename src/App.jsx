@@ -10,13 +10,14 @@ import Profile from './components/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import Connections from './components/Connections';
 import Requests from './components/Requests';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
   const user = useSelector((state) => state.user);
   const token = Cookies.get('token');
 
   return (
-    <>
+    <ErrorBoundary>
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Body />}>
@@ -30,7 +31,7 @@ function App() {
               }
             />
             <Route path="/login" element={user || token ? <Navigate to="/feed" /> : <Login />} />
-            <Route path="/signup" element={user || token ? <Navigate to="/profile" /> : <Signup />} />
+            <Route path="/signup" element={user || token ? <Navigate to="/Profile" /> : <Signup />} />
             <Route
               path="/About"
               element={
@@ -66,7 +67,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </ErrorBoundary>
   );
 }
 
