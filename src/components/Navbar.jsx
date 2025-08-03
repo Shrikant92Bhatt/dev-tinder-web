@@ -22,7 +22,7 @@ const Navbar = () => {
     }
   };
   return (
-    <div className="navbar bg-base-300 shadow-sm">
+    <div className="navbar bg-base-300 shadow-lg border-b border-base-300">
       <div className="flex-1">
         <Link to={'/'} className="btn btn-ghost text-xl">
           devTinder
@@ -40,7 +40,7 @@ const Navbar = () => {
               </div>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-300 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                className="menu menu-sm dropdown-content bg-base-300 rounded-box z-50 mt-3 w-52 p-2 shadow-lg"
               >
                 <li>
                   <Link to={'/profile'} className="justify-between">

@@ -29,9 +29,18 @@ const Body = () => {
   }, []);
 
   return (
-    <div>
-      <Navbar />
-      <Outlet />
+    <div className="min-h-screen flex flex-col">
+      {/* Sticky Navbar */}
+      <div className="sticky top-0 z-50">
+        <Navbar />
+      </div>
+      
+      {/* Main Content Area */}
+      <main className="flex-1 flex flex-col">
+        <Outlet />
+      </main>
+      
+      {/* Footer */}
       <Footer />
     </div>
   );

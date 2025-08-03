@@ -93,4 +93,22 @@ export const rejectRequest = async (requestId) => {
   }
 };
 
+export const sendConnectionRequest = async (userId) => {
+  try {
+    // /request/send/:status/:toUserId
+    const response = axios.post(URL + `/request/send/interested/${userId}`, {}, { withCredentials: true });
+    return (await response).data;
+  } catch (error) {
+    throw new Error('Error in sending connection request', error);
+  }
+};
+export const rejectUser = async (userId) => {
+  try {
+    const response = axios.post(URL + `/request/send/ignored/${userId}`, {}, { withCredentials: true });
+    return (await response).data;
+  } catch (error) {
+    throw new Error('Error in rejecting user', error);
+  }
+};
+
 export default login;
