@@ -3,24 +3,24 @@ const environments = {
   development: {
     API_BASE_URL: '', // Use relative URLs in development (proxy handles it)
     APP_NAME: 'DevTinder',
-    APP_VERSION: __APP_VERSION__ || '1.0.0',
-    BUILD_TIME: __BUILD_TIME__ || new Date().toISOString(),
+    APP_VERSION: import.meta.env.VITE_APP_VERSION || '1.0.0',
+    BUILD_TIME: import.meta.env.VITE_BUILD_TIME || new Date().toISOString(),
     DEBUG: true,
     LOG_LEVEL: 'debug'
   },
   staging: {
     API_BASE_URL: 'https://staging-api.your-domain.com',
     APP_NAME: 'DevTinder',
-    APP_VERSION: __APP_VERSION__ || '1.0.0',
-    BUILD_TIME: __BUILD_TIME__ || new Date().toISOString(),
+    APP_VERSION: import.meta.env.VITE_APP_VERSION || '1.0.0',
+    BUILD_TIME: import.meta.env.VITE_BUILD_TIME || new Date().toISOString(),
     DEBUG: false,
     LOG_LEVEL: 'info'
   },
   production: {
     API_BASE_URL: 'https://api.your-domain.com',
     APP_NAME: 'DevTinder',
-    APP_VERSION: __APP_VERSION__ || '1.0.0',
-    BUILD_TIME: __BUILD_TIME__ || new Date().toISOString(),
+    APP_VERSION: import.meta.env.VITE_APP_VERSION || '1.0.0',
+    BUILD_TIME: import.meta.env.VITE_BUILD_TIME || new Date().toISOString(),
     DEBUG: false,
     LOG_LEVEL: 'error'
   }

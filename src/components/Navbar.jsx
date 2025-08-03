@@ -14,7 +14,7 @@ const Navbar = () => {
   
   const logoutHandler = async () => {
     try {
-      const resp = await logoutAPI();
+      await logoutAPI();
   
       clearCookies();
       dispatch(removeUser());

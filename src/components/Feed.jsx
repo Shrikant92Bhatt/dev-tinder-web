@@ -24,7 +24,7 @@ const Feed = () => {
     fetchFeed();
   }, []);
 
-  const handleUserAction = (userId, action) => {
+  const handleUserAction = (userId) => {
     // Move to next user after action
     setCurrentUserIndex(prev => prev + 1);
     // Remove the user from the feed after action
